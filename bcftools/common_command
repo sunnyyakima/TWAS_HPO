@@ -1,0 +1,15 @@
+
+bcftools query -l input.vcf
+
+bcftools view -Oz -f PASS -s 2169478  GCA352003.vcf.gz > 2169478b.vcf.gz
+bcftools view -i 'QUAL>50 & INFO/DP>20 & GQ>20' -Oz -o freq3_filter_QUAL50_DP20_GQ20.vcf.gz freq3_merged.vcf.gz
+bcftools view -q 0.01:minor -Oz -o freq3_filter_QUAL50_DP20_GQ20_minor_01.vcf.gz   freq3_filter_QUAL50_DP20_GQ20.vcf.gz
+bcftools view --regions chr1 -Oz -o polg_chr1.vcf.gz polg_merged.vcf.gz &
+bcftools view --max-alleles 2 -Oz -o polg_chr21_remove_multiallele.vcf.gz polg_chr21.vcf.gz
+bcftools view -S amydala_genotype_id.txt GTEx_Analysis_2016-01-15_v7_ExomeSeq_603Indiv_GATK_HaplotypeCaller.vcf.gz > amydala_vcf 
+
+bcftools concat --threads 20 -f file_list -Oz -o mod_polg_genome.vcf.gz 
+bcftools merge  --threads 20 -Oz -o polg_merged.vcf.gz *QUAL50_DP20_QD20.vcf.gz 
+ 
+bcftools annotate --threads 20 -a dbSNP/All_20180423_rename_chr.vcf.gz -c ID -Oz -o mod_polg_genome_add_rsid.vcf.gz mod_polg_genome.vcf.gz
+bcftools annotate --rename-chrs rename_chr -Oz -o amydala_WGS_anno.vcf.gz amydala_WGS.vcf.gz 
