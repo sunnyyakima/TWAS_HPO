@@ -1,0 +1,8 @@
+# tutorial is here:
+https://github.com/hakyimlab/MetaXcan/wiki/Individual-level-PrediXcan:-introduction,-tutorials-and-manual
+
+1: install & setup
+A quick-and-dirty solution to install the basic requirements is using Miniconda and the file software/conda_env.yaml in this repository to create a working environment.
+
+conda env create -f /path/to/this/repo/software/conda_env.yaml
+conda activate imlabtools
