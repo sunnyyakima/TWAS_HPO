@@ -1,0 +1,14 @@
+# http://faculty.washington.edu/browning/beagle/beagle.html
+
+# do the imputation for each chromosome separately
+# do the conform first
+# in case of multialleles & duplcate variants
+a: remove variants whose MAF < 1%
+minor AF 0.01
+bcftools view -q 0.01:minor -Oz -o freq3_filter_QUAL50_DP20_GQ20_minor_01.vcf.gz   freq3_filter_QUAL50_DP20_GQ20.vcf.gz
+b: set max alleles to 2
+bcftools view --max-alleles 2 -Oz -o polg_chr21_remove_multiallele.vcf.gz polg_chr21.vcf.gz
+
+java -jar conform-gt.24May16.cee.jar  ref=chr7.1kg.phase3.v5a.vcf.gz  gt=GTEx_WES_chr07.vcf.gz  chrom=7  match=POS  out=GTEx_WES_chr07_mod
+
+java -Xmx50g -jar beagle.22Jul22.46e.jar nthreads=10  map=beagle/plink.chr19.GRCh37.map ref=chr19.1kg.phase3.v5a.b37.bref3 gt=GTEx_WES_chr19_mod.vcf.gz  out=GTEx_WES_chr19_mod_beagle 
