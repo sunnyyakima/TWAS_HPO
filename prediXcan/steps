@@ -6,3 +6,17 @@ A quick-and-dirty solution to install the basic requirements is using Miniconda 
 
 conda env create -f /path/to/this/repo/software/conda_env.yaml
 conda activate imlabtools
+
+clone the folder https://github.com/hakyimlab/MetaXcan/tree/master/software
+
+2: models:
+mashr-based and elastic net based
+https://predictdb.org/post/2021/07/21/gtex-v8-models-on-eqtl-and-sqtl/
+
+3: commands:
+# for vcf using hg19, but models of hg38 
+conda activate imlabtools
+nohup   python3 /work/yu_liu/software/prediXcan/MetaXcan/software/Predict.py --model_db_path  /work/yu_liu/software/prediXcan/eqtl/mashr/mashr_Brain_Amygdala.db --model_db_snp_key varID  --vcf_genotypes ./amydala_genotype_rename_chr_add_rsid.vcf.gz --vcf_mode genotyped --liftover /work/yu_liu/software/prediXcan/eqtl/mashr/hg19ToHg38.over.chain.gz --on_the_fly_mapping METADATA "{}_{}_{}_{}_b38" --prediction_output ./amydala_mashr_predict.txt --prediction_summary_output ./amydala_mashr_summary.txt --verbosity 9 --throw &
+nohup   python3 /work/yu_liu/software/prediXcan/MetaXcan/software/PrediXcanAssociation.py --input_phenos_file polg_onset_gender.txt --input_phenos_column onset_days   --covariates_file polg_onset_gender.txt --covariates gender  --expression_file ./polg_Caudate_mashr_predict.txt   --output polg_Caudate_mashr_covGender_association.txt   --verbosity 9 --throw &  
+conda deactivate
+
